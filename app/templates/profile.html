@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col s12" style="text-align:center;">
+                    {% if current_user.profile_picture %}
+                        <img src="{{ url_for('users.get_file', username = current_user.username, filename= current_user.profile_picture) }}" alt="Profile Picture" class="imgCircular" id="imgPerfil">
+                        <h5>{{ current_user.first_name }} {{ current_user.last_name }}</h5>
+                    {% elif current_user.social_id %}
+                        <img src="https://graph.facebook.com/{{ social_id }}/picture?width=200&height=200" alt="Profile Picture" class="imgCircular" id="imgPerfil">
+                        <h5>{{ current_user.username }}</h5>
+                    {% else %}
+                        <img src="{{ url_for('static', filename = 'img/default_profile.png') }}" alt="Profile Picture" class="imgCircular" id="imgPerfil">
+                        <h5>{{ current_user.first_name }} {{ current_user.last_name }}</h5>
+                    {% endif %}
+                </div>
+                <div class="col s12">
+                    {% if not current_user.social_id %}
+                        <a href="{{ url_for('users.edit_profile') }}"><img src="{{ url_for('static', filename = 'img/settings.png') }}" alt="Settings" id="imgSettings"></a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12" style="text-align:center;">
+                    <table class="hoverable">
+                        <thead>
+                            <th>Category</th>
+                            <th>Bookmarks</th>
+                        </thead>
+                        {% for category in categories %}
+                            <tr>
+                                <td>{{ category.name }}</td>
+                                <td>{{ bookmarks_count[category.name] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

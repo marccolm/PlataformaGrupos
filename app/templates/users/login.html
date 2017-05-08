@@ -1,0 +1,63 @@
+{% extends "material/base.html" %}
+{% import "material/utils.html" as util %}
+{% import "material/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/login.css') }}">
+{% endblock %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{{ container() }}
+    {% for message in get_flashed_messages() %}
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title red-text">Error</span>
+                <p class="red-text"> {{ message }} </p>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col s12 m12">
+            <div class="card">
+              <div class="card-content black-text">
+                <span class="black-text card-title">Login</span>
+                  <form action="" method='POST'>
+                    <div class="input-field col s12">
+                      {{ form.username(class_='validate') }}
+                      {{ form.username.label }}
+                       {% for error in form.username.errors %}
+                        <p class="red-text">{{ error }}</p> <br>
+                      {% endfor %}
+                    </div>
+                    <div class="input-field col s12">
+                      {{ form.password(class_='required') }}
+                      {{ form.password.label }} <br>
+                      {% for error in form.password.errors %}
+                        <p class="red-text">{{ error }}</p> <br>
+                      {% endfor %}<br>
+                    </div>
+                    <p>
+                        &nbsp&nbsp {{ form.remember_me}} {{ form.remember_me.label }}<br> <br>
+                        {% for error in form.remember_me.errors %}
+                          <p class="red-text">{{ error }}</p> <br>
+                        {% endfor %}
+                    </p>
+                    <div class="input-field col s12">
+                      {{ form.submit(class_='btn btn-default') }}
+                      {{ form.csrf_token }}
+                      <p><br></p>
+                        <a href="{{ url_for('users.oauth_authorize', provider='facebook') }}" class="btn btn-default blue darken-4">Login with Facebook</a>
+                        <p><br></p>
+                      <a href="{{ url_for('users.register') }}" id="btnCreateAccount">Create an account</a>
+                      <p><br></p>
+                    </div>
+                  </form>
+              </div>
+            </div>
+        </div>
+    </div>
+{{ enddiv() }}
+{% endblock %}

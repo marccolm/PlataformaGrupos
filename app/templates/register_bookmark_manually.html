@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/login.css') }}">
+{% endblock %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{{ container() }}
+    <main>
+        <div class="row">
+            {% for message in get_flashed_messages() %}
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title red-text">Error</span>
+                        <p class="red-text"> {{ message }} </p>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="col s12 m12">
+                <div class="card">
+                  <div class="card-content black-text">
+                    <span class="black-text card-title">Add a Bookmark</span>
+                      <form action="" method='POST'>
+                        <div class="input-field col s12">
+                          {{ form.link(class_='validate') }}
+                          {{ form.link.label }}
+                           {% for error in form.link.errors %}
+                            <p class="red-text">{{ error }}</p> <br>
+                          {% endfor %}
+                        </div>
+                        <div class="input-field col s12">
+                          {{ form.title(class_='validate') }}
+                          {{ form.title.label }}
+                           {% for error in form.title.errors %}
+                            <p class="red-text">{{ error }}</p> <br>
+                          {% endfor %}
+                        </div>
+                        <div class="input-field col s12">
+                          {{ form.description(class_='validate') }}
+                          {{ form.description.label }}
+                           {% for error in form.description.errors %}
+                            <p class="red-text">{{ error }}</p> <br>
+                          {% endfor %}
+                        </div>
+                        <div class="input-field col s12">
+                          {{ form.category.label }}
+                          <br>
+                          {{ form.category(class_='validate') }}
+                           {% for error in form.category.errors %}
+                            <p class="red-text">{{ error }}</p> <br>
+                          {% endfor %}
+                        </div>
+                        <div class="input-field col s12">
+                          {{ form.submit(class_='btn btn-default') }}
+                          {{ form.csrf_token }}
+                          <p><br></p>
+                        </div>
+                      </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{{ enddiv() }}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+    <script src="{{ url_for('static', filename='js/select.js') }}"></script>
+{% endblock %}

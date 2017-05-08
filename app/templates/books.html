@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/libros.css') }}">
+{% endblock %}
+{% block content %}
+<main>
+    <section>
+        <div class="container">
+            <div class="row max-height valign-wrapper">
+                <div class="col s10 offset-s1 m4 offset-m4 valign center-align">
+                    <div class="slider">
+                        <ul class="slides N/A transparent">
+                            <li>
+                                <img src="http://ecx.images-amazon.com/images/I/51rVYveGDgL._SX423_BO1,204,203,200_.jpg"> <!-- random image -->
+                                <div class="caption center-align valign-wrapper">
+                                    <div class="valign">
+                                        <h5>Computer Science Illuminated</h5>
+                                        <h6 class="light grey-text text-lighten-3">Nell Dale, John Lewis.</h6>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/slider.js') }}"></script>
+{% endblock %}

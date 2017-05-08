@@ -1,0 +1,49 @@
+{% extends "material/base.html" %}
+{% import "material/utils.html" as util %}
+
+{% block title %} Bookmarks {% endblock %}
+
+{% block head %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link href='https://fonts.googleapis.com/css?family=Alegreya+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/materializecss.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/general.css') }}">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block navbar %}
+	<header>
+		<a href="#" data-activates="slide-out" class="button-collapse top-nav hide-on-large-only"><i class="material-icons black-text">reorder</i></a>
+		<ul id="slide-out" class="side-nav fixed">
+			<li class="logo"><a id="logo-container" href="{{ url_for('main.index') }}" class="brand-logo">
+				<object id="front-page-logo" type="image/png" data="{{ url_for('static', filename = 'img/bookmark.png') }}">Your browser does not support SVG</object></a></li>
+			<li class="bold"><a href="{{ url_for('main.profile') }}" class="waves-effect waves-teal">Profile</a></li>
+			<li class="no-padding">
+				<ul class="collapsible collapsible-accordion">
+					<li class="bold">
+						<a class="collapsible-header  waves-effect waves-teal" style="display: inline-block; width:170px;">Bookmarks</a>
+						<a href="{{ url_for('main.add_bookmark') }}" class="right-align" style="display: inline-block; float:right;" title="Add a bookmark">+</a>
+						<div class="collapsible-body">
+							<ul>
+								{% for category in categories %}
+									<li><a href="{{ url_for('main.bookmarks', category_id=category.id) }}">{{ category.name }}</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+					</li>
+				</ul>
+		  </li>
+		  <li class="bold"><a href="{{ url_for('users.logout') }}" class="waves-effect waves-teal">Logout</a></li>
+		</ul>
+	</header>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/general.js') }}"></script>
+{% endblock %}

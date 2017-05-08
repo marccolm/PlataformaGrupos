@@ -1,0 +1,50 @@
+{% for bookmark in bookmarks %}
+    <div class="draggable col s12 m4" id="{{ bookmark.id }}">
+        <div class="card hoverable" style="height: 400px;">
+            <div class="card-content" style="padding: 8px">
+                <a href="{{ url_for('main.edit_bookmark', bookmark_id=bookmark.id) }}"><img src="{{ url_for('static', filename='img/Edit-100.png') }}" alt="Edit" class="right-align" style="width:15px; height: 15px;"></a>
+                <img src="{{ url_for('static', filename='img/Delete-100.png') }}" alt="Edit" class="right-align" onclick="remove_bookmark( {{ bookmark.id }} )" style="width:15px; height: 15px; float:right; cursor: pointer;">
+            </div>
+            <div class="card-image">
+            
+                <img src="{{ url_for('main.get_file', bookmark_id = bookmark.id) }}" alt="Bookmark Screenshot" style="height: 200px;">
+                <span class="card-title black-text
+                 truncate">{{ bookmark.title }}</span>
+
+            </div>
+            <div class="card-content">
+                <p>{{ bookmark.description }}</p>
+            </div>
+            <div class="card-action" style="float: bottom;">
+                <a href="{{ bookmark.link }}" target="_blank" style="position:absolute; bottom:0;">Go</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $(".draggable").draggable({ revert: true });
+        $('.draggable').on('mousedown', function(event) { // bring to front when dragged
+            $('.draggable').css('z-index','1');
+            $( this ).css('z-index','1000');
+        });
+        $(".droppable").droppable({
+            accept: ".draggable",
+            hoverClass: "amber accent-2",
+            tolerance: "pointer",
+            drop: function(event,ui){
+                var draggable = ui.draggable;
+                var bookmark_id = draggable.attr("id");
+                var new_category_id = $(this).attr("id");
+                $.ajax({
+                    url: "{{ url_for('main.move_bookmark') }}",
+                    data: {bookmark_id: bookmark_id, category_id : {{ category_id }}, new_category_id: new_category_id },
+                    context: document.body
+                }).done(function(data) {
+                    $("#bookmarks_div").html(data);
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/bookmarks.css') }}">
+
+{% endblock %}
+{% block navbar %}
+	<header>
+		<a href="#" data-activates="slide-out" class="button-collapse top-nav hide-on-large-only"><i class="material-icons black-text">reorder</i></a>
+		<ul id="slide-out" class="side-nav fixed">
+			<li class="logo"><a id="logo-container" href="{{ url_for('main.index') }}" class="brand-logo">
+				<object id="front-page-logo" type="image/png" data="{{ url_for('static', filename = 'img/bookmark.png') }}">Your browser does not support SVG</object></a></li>
+			<li class="bold"><a href="{{ url_for('main.profile') }}" class="waves-effect waves-teal">Profile</a></li>
+			<li class="no-padding">
+				<ul class="collapsible collapsible-accordion">
+					<li class="bold">
+						<a class="collapsible-header  waves-effect waves-teal active" style="display: inline-block; width:170px;">Bookmarks</a>
+						<a href="{{ url_for('main.add_bookmark') }}" class="right-align" style="display: inline-block; float:right;" title="Add a bookmark">+</a>
+						<div class="collapsible-body">
+							<ul>
+                                {% for category in categories %}
+                                    {% if category.id|int == category_id|int %}
+                                        <li class="droppable active teal lighten-1" id="{{ category.id }}"><a href="{{ url_for('main.bookmarks', category_id=category.id) }}">{{ category.name }}</a></li>
+                                    {% else %}
+									    <li id="{{ category.id }}" class = "droppable"><a href="{{ url_for('main.bookmarks', category_id=category.id) }}">{{ category.name }}</a></li>
+                                    {% endif %}
+								{% endfor %}
+							</ul>
+						</div>
+					</li>
+				</ul>
+		  </li>
+		  <li class="bold"><a href="{{ url_for('users.logout') }}" class="waves-effect waves-teal">Logout</a></li>
+		</ul>
+	</header>
+{% endblock %}
+
+{% block content %}
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <h4>{{ category_name }}</h4>
+                    <div class="divider"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s4" style="float: right;">
+                    <input id="search" type="text" class="validate">
+                    <label for="search">Search</label>
+                </div>
+            </div>
+            <div class="row" id="bookmarks_div">
+                {% for bookmark in bookmarks %}
+                    <div class="draggable col s12 m4" id="{{ bookmark.id }}">
+                        <div class="card hoverable" style="height: 400px;">
+                            <div class="card-content" style="padding: 8px">
+                                <a href="{{ url_for('main.edit_bookmark', bookmark_id=bookmark.id) }}"><img src="{{ url_for('static', filename='img/Edit-100.png') }}" alt="Edit" class="right-align" style="width:15px; height: 15px;"></a>
+                                <img src="{{ url_for('static', filename='img/Delete-100.png') }}" alt="Edit" class="right-align" onclick="remove_bookmark( {{ bookmark.id }} )" style="width:15px; height: 15px; float:right; cursor: pointer;">
+                            </div>
+                            <div class="card-image">
+                                <img src="{{ url_for('main.get_file', bookmark_id = bookmark.id) }}" alt="Bookmark Screenshot" style="height: 200px;">
+                                <span class="card-title black-text
+                                 truncate">{{ bookmark.title }}</span>
+                            </div>
+                            <div class="card-content">
+                                <p>{{ bookmark.description }}</p>
+                            </div>
+                            <div class="card-action" style="float: bottom;">
+                                <a href="{{ bookmark.link }}" target="_blank" style="position:absolute; bottom:0;">Go</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script>
+    $(function() {
+        $("#search").keyup(function() {
+            $search_string = $('#search').val()
+            $.ajax({
+                url: "{{ url_for('main.search_bookmarks') }}",
+                data: {search_string: $search_string, category_id : {{ category_id }} } ,
+                context: document.body
+            }).done(function(data) {
+                $("#bookmarks_div").html(data);
+            });
+        });
+    });
+
+    function remove_bookmark(bookmark_id) {
+        $.ajax({
+            url: "{{ url_for('main.remove_bookmark') }}",
+            data: {bookmark_id: bookmark_id, category_id : {{ category_id }} } ,
+            context: document.body
+        }).done(function(data) {
+            $("#bookmarks_div").html(data);
+        });
+    }
+    </script>
+
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $(".draggable").draggable({ revert: true });
+            $('.draggable').on('mousedown', function(event) { // bring to front when dragged
+                $('.draggable').css('z-index','1');
+                $( this ).css('z-index','1000');
+            });
+            $(".droppable").droppable({
+                accept: ".draggable",
+                hoverClass: "amber accent-2",
+                tolerance: "pointer",
+                drop: function(event,ui){
+                    var draggable = ui.draggable;
+                    var bookmark_id = draggable.attr("id");
+                    var new_category_id = $(this).attr("id");
+                    $.ajax({
+                        url: "{{ url_for('main.move_bookmark') }}",
+                        data: {bookmark_id: bookmark_id, category_id : {{ category_id }}, new_category_id: new_category_id },
+                        context: document.body
+                    }).done(function(data) {
+                        $("#bookmarks_div").html(data);
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}

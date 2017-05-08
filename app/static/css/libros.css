@@ -1,0 +1,8 @@
+.caption {
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.slider .slides li img {
+    background-size:100% auto;
+    background-repeat: no-repeat;
+}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/index.css') }}">
+{% endblock %}
+{% block content %}
+    <main>
+        <section>
+            <div class="container">
+                <div class="row max-height valign-wrapper">
+                    <div class="col s6 offset-s3 centered-text valign">
+                        <img src="{{ url_for('static', filename = 'img/bookmark.png') }}" alt="Logo" class="imgPrincipal responsive-img" id="imgPrincipal">
+                        <h5 clas="flow-text">Classify your bookmarks!</h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

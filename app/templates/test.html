@@ -1,0 +1,20 @@
+{% extends "material/base.html" %}
+{% import "material/utils.html" as util %}
+{% import "material/wtf.html" as wtf %}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+{{ container() }}
+    <div class="row">
+        <div class="col s12 m12">
+          	<div class="card">
+            	<div class="card-content black-text">
+            		<span class="card-title">Registration</span>
+              		{{ wtf.quick_form(form) }}
+            	</div>
+          	</div>
+        </div>
+    </div>
+{{ enddiv() }}
+{% endblock %}

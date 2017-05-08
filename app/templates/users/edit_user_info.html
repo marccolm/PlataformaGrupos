@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/login.css') }}">
+{% endblock %}
+
+{% block title %}Edit profile{% endblock %}
+
+{% block content %}
+  <main>
+    <div class="row">
+        <div class="col s12 m12">
+            {% for message in get_flashed_messages() %}
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title red-text">Error</span>
+                        <p class="red-text"> {{ message }} </p>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="card">
+              <div class="card-content black-text">
+                <span class="black-text card-title">Edit profile</span>
+                  <form action="" method="POST" enctype="multipart/form-data">
+                    <div class="input-field col s12">
+                      {{ form.username(class_='validate') }}
+                      {{ form.username.label }} <br>
+                      {% for error in form.username.errors %}
+                        <p class="red-text">{{ error }}</p> <br>
+                      {% endfor %}
+                    </div>
+                    <div class="input-field col s12">
+                      {{ form.first_name(class_='validate') }}
+                      {{ form.first_name.label }} <br>
+                      {% for error in form.first_name.errors %}
+                        <p class="red-text">{{ error }}</p> <br>
+                      {% endfor %}
+                    </div>
+                    <div class="input-field col s12">
+                      {{ form.last_name(class_='validate') }}
+                      {{ form.last_name.label }} <br>
+                      {% for error in form.last_name.errors %}
+                        <p class="red-text">{{ error }}</p> <br>
+                      {% endfor %}
+                    </div>
+                    <div class="input-field col s12">
+                      {{ form.password(class_='validate') }}
+                      {{ form.password.label }} <br>
+                      {% for error in form.password.errors %}
+                        <p class="red-text">{{ error }}</p> <br>
+                      {% endfor %}
+                    </div>
+                    <div class="input-field col s12">
+                      {{ form.confirm_password(class_='validate') }}
+                      {{ form.confirm_password.label }} <br>
+                      {% for error in form.confirm_password.errors %}
+                        <p class="red-text">{{ error }}</p> <br>
+                      {% endfor %}
+                    </div>
+                    <div class="input-field col s12">
+                      {{ form.current_password(class_='validate') }}
+                      {{ form.current_password.label }} <br>
+                      {% for error in form.current_password.errors %}
+                        <p class="red-text">{{ error }}</p> <br>
+                      {% endfor %} <br>
+
+                      {{ form.profile_picture(class_='file-field input-field') }}
+
+                      {% for error in form.profile_picture.errors %}
+                        <p class="red-text">{{ error }}</p> <br>
+                      {% endfor %} <br> <br>
+
+                      {{ form.submit(class_='btn btn-default') }}
+                      {{ form.csrf_token }} <p><br></p>
+                    </div>
+                  </form>
+              </div>
+            </div>
+        </div>
+    </div>
+  </main>
+{% endblock %}

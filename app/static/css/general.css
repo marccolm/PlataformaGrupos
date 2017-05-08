@@ -1,0 +1,35 @@
+@import url(https://fonts.googleapis.com/css?family=Alegreya+Sans);
+
+* {
+	font-family: 'Alegreya Sans', sans-serif;
+}
+
+main {
+	margin-top: 35px;
+}
+
+img.imgCircular {
+	width: 150px;
+	height: 150px;
+	border-radius: 150px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+}
+
+img#imgSettings {
+	width: 40px;
+	height: 40px;
+	float: right;
+}
+
+.centered-text {
+	text-align: center;
+}
+
+.mdi-navigation-menu {
+	color: #000000;
+}
+
+.max-height {
+	height: 100vh;
+}

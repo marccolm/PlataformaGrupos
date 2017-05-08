@@ -1,0 +1,24 @@
+{% extends "material/base.html" %}
+{% import "material/utils.html" as util %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/general.css') }}" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section>
+            <div class="container">
+                <div class="row max-height valign-wrapper">
+                    <div class="col s6 offset-s3 centered-text valign">
+                        <img src="{{ url_for('static', filename = 'img/bookmark.png') }}" alt="Logo" class="imgPrincipal responsive-img" id="imgPrincipal">
+                        <h3 clas="flow-text">We're sorry. Internal server error.</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <br>
+{% endblock %}
